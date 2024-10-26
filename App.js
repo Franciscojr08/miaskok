@@ -1,3 +1,4 @@
+import Toast from 'react-native-toast-message';
 import {useFonts} from "expo-font";
 import Main from "./src/main";
 
@@ -13,6 +14,9 @@ export default function App() {
   }
   
   return (
-      <Main/>
+      <>
+      <Main />
+      <Toast />
+      </>
   );
 }
