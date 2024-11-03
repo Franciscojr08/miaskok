@@ -32,11 +32,7 @@ export default function TelaInicio() {
                         <MenuIcon source={whatsapp}/>
                     </TouchableOpacity>
                 </IconsContainer>
-                
             </Container>
-            
-            
         </View>
     )
-
 }
