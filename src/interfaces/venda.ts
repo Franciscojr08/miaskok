@@ -5,6 +5,6 @@ export interface Venda {
 	produtos: Produto[];
 	vendedor: string;
 	cliente: string;
-	telefone_cliente: string;
 	data: string;
+	eventoId: number;
 }

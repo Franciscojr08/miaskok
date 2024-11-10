@@ -1,6 +1,5 @@
 import { TouchableOpacity, View } from "react-native";
 import Button from "../Button";
-import Header from "../Header";
 import { ButtonsContainer, Container, IconsContainer, MenuIcon } from "./styles";
 import instagram from '../../assets/images/instagramIcon.png'
 import mapa from '../../assets/images/mapaIcon.png'
@@ -11,8 +10,6 @@ export default function TelaInicio() {
 
     return(
         <View>
-            <Header/>
-            
             <Container>
                 <ButtonsContainer>
                     <Button children={'EVENTOS'}></Button>
