@@ -19,7 +19,7 @@ export const consultarDados = async (key) => {
 
 export const consultarItem = async (key, id) => {
 	const data = await consultarDados(key);
-	const index = data.findIndex((item) => item.id === id);
+	const index = data.findIndex((item) => Number(item.id) === Number(id));
 	
 	if (index !== -1) {
 		return data[index];

@@ -10,7 +10,7 @@ export default function ModalPadrao({ visible, onClose, children }) {
 			onRequestClose={onClose}
 			animationType="fade"
 		>
-			<Overlay>
+			<Overlay behavior="padding">
 				<ModalBody>
 					{children}
 				</ModalBody>
