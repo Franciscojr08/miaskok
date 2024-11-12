@@ -1,9 +1,20 @@
-import styled from "styled-components/native";
+//Estilização @Lennon
+import { LinearGradient } from 'expo-linear-gradient';
+import styled from 'styled-components/native';
+
+export const GradientContainer = styled(LinearGradient).attrs(() => ({
+  colors: ['#B0B0B0', '#E0E0E0', '#FFFFFF', '#E0E0E0', '#B0B0B0'],
+  start: { x: 0.3, y: 0 },
+  end: { x: 0.7, y: 1 },
+}))`
+  padding: 12px 24px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const Container = styled.TouchableOpacity`
-    background-color: ${(props) => props.disable ? "#999" : props.primary ? '#FA824C' : '#FFFFFF'};
-    padding: 14px 24px;
-    align-items: center;
-    border-radius: 8px;
-    border: 1px solid #FA824C;
+  border-radius: 8px;
+  overflow: hidden; /* Garante que o LinearGradient siga o formato do botão */
 `;
+

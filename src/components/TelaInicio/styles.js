@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export const Container = styled.View`
     background-color: black;
