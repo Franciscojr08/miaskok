@@ -1,6 +1,6 @@
 import {Venda} from "../interfaces/venda";
 import {adicionarDado, consultarDados, consultarItem, editarDados, removerDados} from "../storage/LocalStorage";
-import {consultarEvento} from "./eventoService";
+import {consultarEvento, consultarEventos} from "./eventoService";
 import {consultarProdutos} from "./produtoService";
 
 const KEY_VENDA = "vendas";
@@ -45,7 +45,7 @@ export async function consultarVendas() {
 // Função p/ calcular a média de vendas por evento *Lennon
 export const calcularMediaVendasPorEvento = async () => {
 	try {
-		const eventos = await consultarProdutos();
+		const eventos = await consultarEventos();
 		
 		if (eventos.length === 0) return 0;
 		

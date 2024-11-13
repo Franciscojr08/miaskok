@@ -8,14 +8,50 @@ import {
 } from "./style";
 import Vendas from "../Venda";
 import {useEffect, useState} from "react";
-import {consultarVendas} from "../../service/vendaService";
+import {consultarVendas, removerVenda} from "../../service/vendaService";
 import venda_empty from "../../assets/images/venda_empty.png";
 import {Text} from "../Text";
+import Toast from "react-native-toast-message";
+import DeleteConfirmModal from "../DeleteConfirmModal";
 
-export default function TelaVenda() {
+export default function TelaVenda({ onEdit, onDelete }) {
 	const [vendas, setVendas] = useState([])
 	const [vendasFiltradas, setVendasFiltradas] = useState([]);
-	const [evento, setEvento] = useState("")
+	const [evento, setEvento] = useState("");
+	const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
+	const [taskDelete, setTaskDelete] = useState({})
+	
+	function handleConfirmDelete(task) {
+		setTaskDelete(task)
+		setIsDeleteModalVisible(true);
+	}
+	
+	function handleDelete() {
+		setIsDeleteModalVisible(false);
+		
+		removerVenda(taskDelete.id)
+			.then(() => {
+				const atualizacaoVendasFiltradas = vendasFiltradas.filter(venda => venda.id !== taskDelete.id);
+				setVendasFiltradas(atualizacaoVendasFiltradas);
+				
+				const atualizacaoVendas = vendas.filter(venda => venda.id !== taskDelete.id);
+				setVendas(atualizacaoVendas);
+
+				Toast.show({
+					type: "success",
+					text1: "Sucesso",
+					text2: "Venda deletada com sucesso."
+				});
+			})
+			.catch((error) => {
+				Toast.show({
+					type: "error",
+					text1: "Erro",
+					text2: error.message
+				});
+			});
+		
+	}
 	
 	useEffect(() => {
 		const carregarVendas = async () => {
@@ -47,7 +83,7 @@ export default function TelaVenda() {
 					/>
 				</FiltroView>
 				{vendasFiltradas.length > 0 ? (
-					<Vendas vendas={vendasFiltradas}/>
+					<Vendas onEdit={onEdit} onDelete={handleConfirmDelete} vendas={vendasFiltradas}/>
 				) : (
 					<VendaEmptyContainer>
 						<VendaEmptyImage source={venda_empty}/>
@@ -60,6 +96,12 @@ export default function TelaVenda() {
 					</VendaEmptyContainer>
 				)}
 			</Container>
+			
+			<DeleteConfirmModal
+				visible={isDeleteModalVisible}
+				onClose={() => setIsDeleteModalVisible(false)}
+				onConfirm={handleDelete}
+			/>
 		</VendaView>
 	);
 }
