@@ -1,6 +1,7 @@
 import {Venda} from "../interfaces/venda";
 import {adicionarDado, consultarDados, consultarItem, editarDados, removerDados} from "../storage/LocalStorage";
-import {consultarEvento} from "./eventoService";
+import {consultarEvento, consultarEventos} from "./eventoService";
+import {consultarProdutos} from "./produtoService";
 
 const KEY_VENDA = "vendas";
 
@@ -31,6 +32,11 @@ export async function consultarVendas() {
 			return {
 				...venda,
 				produtos: venda.produtos.map(produto => JSON.stringify(produto)),
+				produtosId: venda.produtos.reduce((ids, produto) => {
+					const id_produto = produto.id;
+					ids.push(id_produto)
+					return ids;
+				},[]),
 				nomeEvento,
 				totalProdutos,
 				valorTotal
@@ -39,6 +45,31 @@ export async function consultarVendas() {
 	} catch (error) {
 		throw new Error("Falha ao consultar as vendas. Tente novamente!");
 	}
+}
+
+// Função p/ calcular a média de vendas por evento *Lennon
+export const calcularMediaVendasPorEvento = async () => {
+	try {
+		const eventos = await consultarEventos();
+		
+		if (eventos.length === 0) return 0;
+		
+		const totalVendas = await calcularValorTotalDasVenda();
+		const mediaVendasPorEvento = totalVendas / eventos.length;
+		
+		return parseFloat(mediaVendasPorEvento); // vai retorna um número formatado *Lennon
+	} catch (error) {
+		throw new Error("Erro ao calcular a média de vendas por evento.");
+	}
+};
+
+export async function calcularValorTotalDasVenda() {
+	const vendas = await consultarVendas()
+	
+	return vendas.reduce((total, venda) => {
+		const valorVenda = venda.valorTotal
+		return total + valorVenda
+	}, 0);
 }
 
 export function consultarVenda(idVenda) {

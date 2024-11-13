@@ -4,10 +4,15 @@ import {FlatList, TouchableOpacity, View} from "react-native"
 import {VendaActions, VendaIcon} from "./style";
 import edit from '../../assets/images/edit.png';
 import apagar from '../../assets/images/delete.png'
+import {memo} from "react";
 
 export default function Vendas({ vendas, onEdit, onDelete }) {
+	const MemoizedFlatList = memo(FlatList, (prevProps, nextProps) => {
+		return prevProps.vendas === nextProps.vendas; // Shallow comparison
+	});
+	
 	return (
-		<FlatList
+		<MemoizedFlatList
 			data={vendas}
 			keyExtractor={venda => venda.id.toString()}
 			renderItem={({ item: venda }) => (

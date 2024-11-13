@@ -1,16 +1,17 @@
 import {Form, Input} from "./style";
-import Button from "../Button";
 import {useEffect, useState} from "react";
 import Select from "../Select";
 import {consultarEvento} from "../../service/eventoService";
 import Checkbox from "../Checkbox";
 import {Alert} from "react-native";
+import ButtonForm from "../ButtonForm";
+
 export default function VendaForm({ onSave, buttonLabel, venda, eventosOptions }) {
-	const [selectedEvento, setSelectedEvento] = useState('');
+	const [selectedEvento, setSelectedEvento] = useState(venda?.eventoId ?? "");
 	const [produtosOptions, setProdutosOptions] = useState([]);
-	const [selectedProdutos, setSelectedProdutos] = useState([]);
-	const [vendedor, setVendedor] = useState('');
-	const [cliente, setCliente] = useState('');
+	const [selectedProdutos, setSelectedProdutos] = useState(venda?.produtosId ?? []);
+	const [vendedor, setVendedor] = useState(venda?.vendedor ?? "");
+	const [cliente, setCliente] = useState(venda?.cliente ?? "");
 	
 	useEffect(() => {
 		if (selectedEvento) {
@@ -65,7 +66,7 @@ export default function VendaForm({ onSave, buttonLabel, venda, eventosOptions }
 				onChangeText={setCliente}
 			/>
 			
-			<Button
+			<ButtonForm
 				onPress={() => {
 					if (isFormValid()) {
 						onSave({selectedEvento,selectedProdutos,vendedor,cliente})
@@ -84,7 +85,7 @@ export default function VendaForm({ onSave, buttonLabel, venda, eventosOptions }
 				disable={!isFormValid()}
 			>
 				{buttonLabel}
-			</Button>
+			</ButtonForm>
 		</Form>
 	)
 }

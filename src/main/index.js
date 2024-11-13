@@ -2,6 +2,7 @@ import {Container,} from "./styled.js";
 import TelaInicio from "../components/TelaInicio";
 import Toast from "react-native-toast-message";
 import Header from "../components/Header";
+import TelaVenda from "../components/TelaVenda";
 
 export default function Main() {
 
@@ -10,7 +11,8 @@ export default function Main() {
 			<Header/>
 			<Toast />
 			
-			<TelaInicio />
+			<TelaVenda />
+			{/*<TelaInicio />*/}
 		</Container>
 	)
 }

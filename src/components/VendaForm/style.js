@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 export const Form = styled.View`
     margin-top: 32px;
-    gap: 24px;
+    gap: 10px;
 `;
 
 export const Input = styled.TextInput`

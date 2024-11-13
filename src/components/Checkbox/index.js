@@ -1,6 +1,5 @@
+import { FlatList } from 'react-native';
 import SelectMultiple from "react-native-select-multiple";
-import {View} from "react-native";
-
 
 export default function Checkbox({ options, selectedValues, onChange }) {
 	const optionsFormatado = options.map(option => ({
@@ -9,15 +8,20 @@ export default function Checkbox({ options, selectedValues, onChange }) {
 	}));
 	
 	return (
-		<View>
-			<SelectMultiple
-				items={optionsFormatado}
-				selectedItems={selectedValues.map(id => ({ label: '', value: id }))}
-				onSelectionsChange={selections => {
-					const selectedIds = selections.map(item => item.value);
-					onChange(selectedIds);
-				}}
-			/>
-		</View>
-	)
+		<FlatList
+			data={optionsFormatado}
+			keyExtractor={(item) => item.value.toString()}
+			renderItem={({ item }) => (
+				<SelectMultiple
+					items={[item]}
+					selectedItems={selectedValues.map(id => ({ label: '', value: id }))}
+					onSelectionsChange={(selections) => {
+						const selectedIds = selections.map(item => item.value);
+						onChange(selectedIds);
+					}}
+				/>
+			)}
+			style={{ maxHeight: 150, marginBottom: 10 }}
+		/>
+	);
 }
