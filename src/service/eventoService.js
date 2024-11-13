@@ -13,7 +13,12 @@ export async function consultarEventos() {
 		
 		return eventos.map(evento => ({
 			...evento,
-			produtos: evento.produtos.map(produto => JSON.stringify(produto))
+			produtos: evento.produtos.map(produto => JSON.stringify(produto)),
+			produtosId: evento.produtos.reduce((ids, produto) => {
+				const id_produto = produto.id;
+				ids.push(id_produto)
+				return ids;
+			},[]),
 		}));
 	} catch (error) {
 		throw new Error("Falha ao consultar os eventos. Tente novamente!");

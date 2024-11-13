@@ -12,5 +12,5 @@ export const Input = styled.TextInput`
 `;
 
 export const ProdutosContainer = styled.SafeAreaView`
-    height: 300px;
+
 `

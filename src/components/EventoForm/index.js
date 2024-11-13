@@ -1,12 +1,11 @@
 import {Form, Input, ProdutosContainer} from "./style";
-import Button from "../Button";
 import {useEffect, useState} from "react";
-import { StyleSheet } from "react-native";
+import {Platform, StyleSheet} from "react-native";
 import CheckBox from "../Checkbox";
 import {Alert} from "react-native";
 import { TextInputMask } from "react-native-masked-text";
-import { consultarProdutos } from "../../service/produtoService";
 import { consultarEvento } from "../../service/eventoService";
+import ButtonForm from "../ButtonForm";
 
 export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 
@@ -14,19 +13,8 @@ export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 	const [data, setData] = useState(evento?.data ?? '');
 	// const [produtos, setProdutos] = useState();
 
-	const [produtosOptions, setProdutosOptions] = useState([]);
-	const [selectedProduto, setSelectedProduto] = useState([]);
+	const [selectedProduto, setSelectedProduto] = useState(evento?.produtosId ?? []);
 
-	useEffect(() => {
-		if (evento) {
-			const carregarProdutosEvento= async () => {
-				const produtos = await consultarEvento(evento.produto);
-				setSelectedProduto(produtos || []);
-			};
-			
-			carregarProdutosEvento();
-		}
-	}, [selectedProduto]);
 	
 	function changeProdutosSelecionados(selectedIds) {
 		setSelectedProduto(selectedIds);
@@ -43,15 +31,12 @@ export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 
 	return (
 		<Form>
-
-			<ProdutosContainer >
-				<CheckBox
+			
+			<CheckBox
 				options={produtos}
 				selectedValues={selectedProduto}
 				onChange={changeProdutosSelecionados}
-				/>
-			</ProdutosContainer>
-			
+			/>
 
 			<Input
 				placeholder="Nome do Evento"
@@ -71,7 +56,7 @@ export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 			/>
 
 			
-			<Button
+			<ButtonForm
 				onPress={() => {
 					if (isFormValid()) {
 						onSave({nome, data, selectedProduto})
@@ -90,7 +75,7 @@ export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 				disable={!isFormValid()}
 			>
 				{buttonLabel}
-			</Button>
+			</ButtonForm>
 		</Form>
 	)
 	
