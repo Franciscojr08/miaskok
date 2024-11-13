@@ -12,21 +12,7 @@ export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 
 	const [nome, setNome] = useState(evento?.nome ?? '');
 	const [data, setData] = useState(evento?.data ?? '');
-	// const [produtos, setProdutos] = useState();
-
-	const [produtosOptions, setProdutosOptions] = useState([]);
-	const [selectedProduto, setSelectedProduto] = useState([]);
-
-	useEffect(() => {
-		if (evento) {
-			const carregarProdutosEvento= async () => {
-				const produtos = await consultarEvento(evento.produto);
-				setSelectedProduto(produtos || []);
-			};
-			
-			carregarProdutosEvento();
-		}
-	}, [selectedProduto]);
+	const [selectedProduto, setSelectedProduto] = useState(evento?.produtos ?? []);
 	
 	function changeProdutosSelecionados(selectedIds) {
 		setSelectedProduto(selectedIds);
@@ -36,7 +22,7 @@ export default function EventoForm({ onSave, buttonLabel, evento, produtos}) {
 		return (
 			nome.trim() !== '' &&
 			data.trim() !== '' &&
-			produtos.length > 1
+			selectedProduto.length > 1
 		);
 	}
 
