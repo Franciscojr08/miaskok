@@ -60,7 +60,7 @@ export default function TelaInicio() {
             {/* Alteração da moeda "currency" para Real, deixando mais intuitiva a visualização @Lennon */}
 
             <Text style={{ fontSize: 16, marginBottom: 20 }}>
-                {mediaVendas !== null ? "R$ " + mediaVendas.toLocaleString('pt-BR', {
+                {mediaVendas !== null ? mediaVendas.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
                     minimumFractionDigits: 2,
