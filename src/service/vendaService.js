@@ -1,6 +1,7 @@
 import {Venda} from "../interfaces/venda";
 import {adicionarDado, consultarDados, consultarItem, editarDados, removerDados} from "../storage/LocalStorage";
 import {consultarEvento} from "./eventoService";
+import {consultarProdutos} from "./produtoService";
 
 const KEY_VENDA = "vendas";
 
@@ -44,12 +45,11 @@ export async function consultarVendas() {
 // Função p/ calcular a média de vendas por evento *Lennon
 export const calcularMediaVendasPorEvento = async () => {
 	try {
-		const vendas = await consultarDados('vendas');
-		const eventos = await consultarDados('eventos');
+		const eventos = await consultarProdutos();
 		
 		if (eventos.length === 0) return 0;
 		
-		const totalVendas = vendas.length;
+		const totalVendas = await calcularValorTotalDasVenda();
 		const mediaVendasPorEvento = totalVendas / eventos.length;
 		
 		return parseFloat(mediaVendasPorEvento); // vai retorna um número formatado *Lennon
@@ -57,6 +57,15 @@ export const calcularMediaVendasPorEvento = async () => {
 		throw new Error("Erro ao calcular a média de vendas por evento.");
 	}
 };
+
+export async function calcularValorTotalDasVenda() {
+	const vendas = await consultarVendas()
+	
+	return vendas.reduce((total, venda) => {
+		const valorVenda = venda.valorTotal
+		return total + valorVenda
+	}, 0);
+}
 
 export function consultarVenda(idVenda) {
 	return consultarItem(KEY_VENDA,idVenda)
