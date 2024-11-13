@@ -1,7 +1,7 @@
 import {Form, Input} from "./style";
 import Button from "../Button";
 import {useState} from "react";
-
+import { StyleSheet } from "react-native";
 
 import {Alert} from "react-native";
 
@@ -36,12 +36,15 @@ export default function ProdutoForm({ onSave, buttonLabel, produto }) {
 				value={quantidade}
 				onChangeText={setQuantidade}
 			/>
-			<Input
+			<TextInputMask
+			    type="money"
 				placeholder="Valor"
 				placeholderTextColor="#666"
 				keyboardType="decimal-pad"
 				value={valor}
 				onChangeText={setValor}
+				style={style.input}
+
 			/>
 			
 			<Button
@@ -67,3 +70,13 @@ export default function ProdutoForm({ onSave, buttonLabel, produto }) {
 		</Form>
 	)
 }
+
+const style = StyleSheet.create({
+	input:{
+		padding: 16,
+		   borderColor: 'rgba(204,204,204,0.5)',
+		borderWidth:1,
+		borderRadius: 8,
+	}
+	
+})
