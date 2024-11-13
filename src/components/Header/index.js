@@ -1,15 +1,16 @@
 import { TouchableOpacity } from 'react-native'
 import logo from '../../assets/images/logo.png'
-import menu from '../../assets/images/menu.png'
-import { Container, ImageContainer, MenuIcon } from './styles'
+import { Container, ImageContainer } from './styles'
+import {useNavigation} from "@react-navigation/native";
 
 export default function Header() {
+    const navigation = useNavigation();
 
     return (
         <Container>
-
-            <ImageContainer source={logo} />
-
+            <TouchableOpacity onPress={() => navigation.navigate('TelaInicio')}>
+                <ImageContainer source={logo} />
+            </TouchableOpacity>
         </Container>
     )
 }

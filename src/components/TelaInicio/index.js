@@ -12,8 +12,10 @@ import mapa from '../../assets/images/mapaIcon.png';
 import whatsapp from '../../assets/images/whatsappIcon.png';
 import ModalEstatistica from "../ModalEstatistica";
 import {consultarEventos} from "../../service/eventoService";
+import {useNavigation} from "@react-navigation/native";
 
 export default function TelaInicio() {
+	const navigation = useNavigation();
 	const [modalEstatisticaVisible, setModalEstatisticaVisible] = useState(false);
 	const [mediaVendas, setMediaVendas] = useState(null);
 	const [totalEventos,setTotalEventos] = useState(0)
@@ -40,9 +42,9 @@ export default function TelaInicio() {
 		<View>
 			<Container>
 				<ButtonsContainer>
-					<Button icon="calendar" onPress={() => {/* Navegação para eventos */}}>EVENTOS</Button>
-					<Button icon="shoppingcart" onPress={() => {/* Navegação para vendas */}}>VENDAS</Button>
-					<Button icon="tags" onPress={() => {/* Navegação para produtos */}}>PRODUTOS</Button>
+					<Button icon="calendar" onPress={() => navigation.navigate('TelaEvento')}>EVENTOS</Button>
+					<Button icon="shoppingcart" onPress={() => navigation.navigate('TelaVenda')}>VENDAS</Button>
+					<Button icon="tags" onPress={() => navigation.navigate('TelaProduto')}>PRODUTOS</Button>
 					<Button icon="barschart" onPress={handleEstatisticasClick}>ESTATÍSTICAS</Button>
 				</ButtonsContainer>
 				{/* ^ Adição de icones aos botões ^ - @Lennon */}
