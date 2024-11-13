@@ -41,6 +41,23 @@ export async function consultarVendas() {
 	}
 }
 
+// Função p/ calcular a média de vendas por evento *Lennon
+export const calcularMediaVendasPorEvento = async () => {
+	try {
+		const vendas = await consultarDados('vendas');
+		const eventos = await consultarDados('eventos');
+		
+		if (eventos.length === 0) return 0;
+		
+		const totalVendas = vendas.length;
+		const mediaVendasPorEvento = totalVendas / eventos.length;
+		
+		return parseFloat(mediaVendasPorEvento); // vai retorna um número formatado *Lennon
+	} catch (error) {
+		throw new Error("Erro ao calcular a média de vendas por evento.");
+	}
+};
+
 export function consultarVenda(idVenda) {
 	return consultarItem(KEY_VENDA,idVenda)
 }

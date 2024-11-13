@@ -10,6 +10,7 @@ import {
 const KEY_PRODUTO = "produtos";
 
 export async function salvarProduto(produto: Produto) {
+
 	await adicionarDado(KEY_PRODUTO, produto);
 }
 
