@@ -1,6 +1,7 @@
 import {Container, VendaView} from "./style";
 import Vendas from "../Venda";
-
+import PlusButton from "../PlusButton";
+import NovaVendaModal from "../NovaVendaModal";
 export default function TelaVenda({ vendas }) {
 	
 	return (
@@ -8,6 +9,8 @@ export default function TelaVenda({ vendas }) {
 			<Container>
 				<Vendas vendas={vendas} />
 			</Container>
+			<PlusButton onPress={() => NovaVendaModal(true)}/>
+
 		</VendaView>
 	)
 }
