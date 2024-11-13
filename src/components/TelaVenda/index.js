@@ -88,20 +88,20 @@ export default function TelaVenda() {
 			});
 	}
 	
-	function handleEditeTask(task) {
-		setVendaBeingEdit(task)
+	function handleEditeVenda(venda) {
+		setVendaBeingEdit(venda)
 		setIsEditVendaModalVisible(true)
 	}
 	
-	async function handleSaveEditVenda(task) {
+	async function handleSaveEditVenda(venda) {
 		setIsEditVendaModalVisible(false);
-		const produtosCarregados = await carregarProdutosSelecionados(task.selectedProdutos)
+		const produtosCarregados = await carregarProdutosSelecionados(venda.selectedProdutos)
 		const vendaEdit = {
 			produtos: produtosCarregados,
-			vendedor: task.vendedor,
-			cliente: task.cliente,
+			vendedor: venda.vendedor,
+			cliente: venda.cliente,
 			data: vendaBeingEdit.data,
-			eventoId: task.selectedEvento
+			eventoId: venda.selectedEvento
 		}
 		
 		editarVenda(vendaBeingEdit.id, vendaEdit)
@@ -181,7 +181,7 @@ export default function TelaVenda() {
 					/>
 				</FiltroView>
 				{vendasFiltradas.length > 0 ? (
-					<Vendas onEdit={handleEditeTask} onDelete={handleConfirmDelete} vendas={vendasFiltradas}/>
+					<Vendas onEdit={handleEditeVenda} onDelete={handleConfirmDelete} vendas={vendasFiltradas}/>
 				) : (
 					<VendaEmptyContainer>
 						<VendaEmptyImage source={venda_empty}/>
