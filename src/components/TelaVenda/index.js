@@ -8,35 +8,41 @@ import {
 } from "./style";
 import Vendas from "../Venda";
 import {useEffect, useState} from "react";
-import {consultarVendas, removerVenda} from "../../service/vendaService";
+import {consultarVendas, editarVenda, removerVenda} from "../../service/vendaService";
 import venda_empty from "../../assets/images/venda_empty.png";
 import {Text} from "../Text";
 import Toast from "react-native-toast-message";
 import DeleteConfirmModal from "../DeleteConfirmModal";
+import EditVendaModal from "../EditVendaModal";
+import {consultarEventos} from "../../service/eventoService";
+import {consultarProduto} from "../../service/produtoService";
 
-export default function TelaVenda({ onEdit, onDelete }) {
-	const [vendas, setVendas] = useState([])
+export default function TelaVenda() {
+	const [vendas, setVendas] = useState([]);
 	const [vendasFiltradas, setVendasFiltradas] = useState([]);
 	const [evento, setEvento] = useState("");
-	const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false)
-	const [taskDelete, setTaskDelete] = useState({})
+	const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+	const [vendaDelete, setVendaDelete] = useState({});
+	const [isEditVendaModalVisible, setIsEditVendaModalVisible] = useState(false);
+	const [vendaBeingEdit, setVendaBeingEdit] = useState({});
+	const [eventosOptions, setEventosOptions] = useState([]);
 	
-	function handleConfirmDelete(task) {
-		setTaskDelete(task)
+	function handleConfirmDelete(venda) {
+		setVendaDelete(venda)
 		setIsDeleteModalVisible(true);
 	}
 	
 	function handleDelete() {
 		setIsDeleteModalVisible(false);
 		
-		removerVenda(taskDelete.id)
+		removerVenda(vendaDelete.id)
 			.then(() => {
-				const atualizacaoVendasFiltradas = vendasFiltradas.filter(venda => venda.id !== taskDelete.id);
+				const atualizacaoVendasFiltradas = vendasFiltradas.filter(venda => venda.id !== vendaDelete.id);
 				setVendasFiltradas(atualizacaoVendasFiltradas);
 				
-				const atualizacaoVendas = vendas.filter(venda => venda.id !== taskDelete.id);
+				const atualizacaoVendas = vendas.filter(venda => venda.id !== vendaDelete.id);
 				setVendas(atualizacaoVendas);
-
+				
 				Toast.show({
 					type: "success",
 					text1: "Sucesso",
@@ -50,7 +56,60 @@ export default function TelaVenda({ onEdit, onDelete }) {
 					text2: error.message
 				});
 			});
+	}
+	
+	function handleEditeTask(task) {
+		setVendaBeingEdit(task)
+		setIsEditVendaModalVisible(true)
+	}
+	
+	async function handleSaveEditVenda(task) {
+		setIsEditVendaModalVisible(false);
+		const produtosCarregados = await carregarProdutosSelecionados(task.selectedProdutos)
+		const vendaEdit = {
+			produtos: produtosCarregados,
+			vendedor: task.vendedor,
+			cliente: task.cliente,
+			data: vendaBeingEdit.data,
+			eventoId: task.selectedEvento
+		}
 		
+		editarVenda(vendaBeingEdit.id, vendaEdit)
+			.then(() => {
+				recarregarVendas();
+				
+				Toast.show({
+					type: "success",
+					text1: "Sucesso",
+					text2: "Venda atualizada com sucesso."
+				});
+			})
+			.catch((error) => {
+				Toast.show({
+					type: "error",
+					text1: "Erro",
+					text2: error.message
+				});
+			});
+	}
+	
+	async function recarregarVendas() {
+		const vendasCarregadas = await consultarVendas(); // Sua função para obter as vendas
+		setVendas(vendasCarregadas);
+		setVendasFiltradas(vendasCarregadas);
+	}
+	
+	async function carregarProdutosSelecionados(selectedProdutos) {
+		const produtosCarregados = [];
+		
+		await Promise.all(
+			selectedProdutos.map(async (id) => {
+				const produto = await consultarProduto(id);
+				produtosCarregados.push(produto);
+			})
+		);
+		
+		return produtosCarregados;
 	}
 	
 	useEffect(() => {
@@ -70,6 +129,15 @@ export default function TelaVenda({ onEdit, onDelete }) {
 		setVendasFiltradas(vendasFiltradas);
 	}, [evento, vendas]);
 	
+	useEffect(() => {
+		const carregarEventos = async () => {
+			const eventos = await consultarEventos()
+			setEventosOptions(eventos)
+		}
+		
+		carregarEventos()
+	}, []);
+	
 	return (
 		<VendaView>
 			<Container>
@@ -83,7 +151,7 @@ export default function TelaVenda({ onEdit, onDelete }) {
 					/>
 				</FiltroView>
 				{vendasFiltradas.length > 0 ? (
-					<Vendas onEdit={onEdit} onDelete={handleConfirmDelete} vendas={vendasFiltradas}/>
+					<Vendas onEdit={handleEditeTask} onDelete={handleConfirmDelete} vendas={vendasFiltradas}/>
 				) : (
 					<VendaEmptyContainer>
 						<VendaEmptyImage source={venda_empty}/>
@@ -96,6 +164,14 @@ export default function TelaVenda({ onEdit, onDelete }) {
 					</VendaEmptyContainer>
 				)}
 			</Container>
+			
+			<EditVendaModal
+				visible={isEditVendaModalVisible}
+				onClose={() => setIsEditVendaModalVisible(false)}
+				eventosOptions={eventosOptions}
+				onSave={handleSaveEditVenda}
+				venda={vendaBeingEdit}
+			/>
 			
 			<DeleteConfirmModal
 				visible={isDeleteModalVisible}

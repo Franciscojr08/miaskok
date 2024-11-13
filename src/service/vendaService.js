@@ -32,6 +32,11 @@ export async function consultarVendas() {
 			return {
 				...venda,
 				produtos: venda.produtos.map(produto => JSON.stringify(produto)),
+				produtosId: venda.produtos.reduce((ids, produto) => {
+					const id_produto = produto.id;
+					ids.push(id_produto)
+					return ids;
+				},[]),
 				nomeEvento,
 				totalProdutos,
 				valorTotal
