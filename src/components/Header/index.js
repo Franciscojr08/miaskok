@@ -10,11 +10,9 @@ export default function Header() {
     const navigation = useNavigation();
     const route = useRoute();
 
-
     if(route.name === 'TelaInicio'){
         return(
             <ContainerPrincipal>
-                {console.log('aaaaaaaa')}
                 <TouchableOpacity onPress={() => navigation.navigate('TelaInicio')}>
                     <ImageContainer source={logo} />
                 </TouchableOpacity>
@@ -23,7 +21,6 @@ export default function Header() {
     }else{
     return (
         <ContainerSecundario>
-            {console.log('bbbbb')}
             <TouchableOpacity onPress={() => navigation.goBack()}>
                 <BackContainer source={voltar}/>
             </TouchableOpacity>

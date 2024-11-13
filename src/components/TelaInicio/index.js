@@ -21,18 +21,11 @@ export default function TelaInicio() {
 	const [totalEventos,setTotalEventos] = useState(0)
 	const [valorTotalVendas,setValorTotalVendas] = useState(0)
 	
-	useEffect(() => {
-		const consultarTotalEventos = async () => {
-			const eventos = await consultarEventos()
-			setTotalEventos(eventos.length)
-		}
-		
-		consultarTotalEventos()
-	}, [])
-	
 	const handleEstatisticasClick = async () => {
 		const media = await calcularMediaVendasPorEvento();
 		const valorTotalVendas = await calcularValorTotalDasVenda();
+		const eventos = await consultarEventos()
+		setTotalEventos(eventos.length)
 		setMediaVendas(media);
 		setValorTotalVendas(valorTotalVendas)
 		setModalEstatisticaVisible(true);
