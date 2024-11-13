@@ -1,9 +1,9 @@
 import {Form, Input} from "./style";
-import Button from "../Button";
 import {useState} from "react";
 import { StyleSheet } from "react-native";
 
 import {Alert} from "react-native";
+import ButtonForm from "../ButtonForm";
 
 export default function ProdutoForm({ onSave, buttonLabel, produto }) {
 
@@ -36,18 +36,16 @@ export default function ProdutoForm({ onSave, buttonLabel, produto }) {
 				value={quantidade}
 				onChangeText={setQuantidade}
 			/>
-			<TextInputMask
-			    type="money"
+			<Input
 				placeholder="Valor"
 				placeholderTextColor="#666"
 				keyboardType="decimal-pad"
 				value={valor}
 				onChangeText={setValor}
 				style={style.input}
-
 			/>
 			
-			<Button
+			<ButtonForm
 				onPress={() => {
 					if (isFormValid()) {
 						onSave({nome, quantidade, valor})
@@ -66,7 +64,7 @@ export default function ProdutoForm({ onSave, buttonLabel, produto }) {
 				disable={!isFormValid()}
 			>
 				{buttonLabel}
-			</Button>
+			</ButtonForm>
 		</Form>
 	)
 }

@@ -16,7 +16,6 @@ export default function Eventos({ eventos, onEdit, onDelete }) {
 					</View>
 				
 					<EventoFooter>
-
                    
 					<Text weight={500}>{evento.data}</Text>
 					<Text weight={500}>{evento.produtos.length} <Text>Produtos</Text></Text>
