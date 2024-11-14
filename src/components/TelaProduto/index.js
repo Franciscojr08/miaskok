@@ -1,4 +1,4 @@
-import {Container, ProdutoView} from "./style";
+import {Container, ProdutoEmptyContainer, ProdutoEmptyImage, ProdutoView} from "./style";
 import Produtos from "../Produto";
 import PlusButton from "../PlusButton";
 import NovoProdutoModal from "../NovoProdutoModal";
@@ -10,6 +10,8 @@ import {consultarEventos} from "../../service/eventoService";
 import DeleteConfirmModal from "../DeleteConfirmModal";
 import {editarVenda} from "../../service/vendaService";
 import EditProdutoModal from "../EditProdutoModal";
+import produto_empty from "../../assets/images/produto_empty.png";
+import {Text} from "../Text";
 
 export default function TelaProduto() {
 	const [isNovoProdutoModalVisible, setIsNovoProdutoModalVisible] = useState(false)
@@ -107,33 +109,45 @@ export default function TelaProduto() {
 		
 		carregarProdutos()
 	}, []);
-
+	
 	return (
 		<ProdutoView>
 			<Container>
-				<Produtos produtos={produtos} onEdit={handleEditeProduto} onDelete={handleConfirmDelete}/>
-				
-				<NovoProdutoModal
-					visible={isNovoProdutoModalVisible}
-					onClose={() => setIsNovoProdutoModalVisible(false)}
-					onSave={handleCreateProduto}
-				/>
-
-				<EditProdutoModal
-					visible={isEditProdutoModalVisible}
-					onSave={handleSaveEditProduto}
-					onClose={() => setIsEditProdutoModalVisible(false)}
-					produto={produtoBeingEdit}
-				/>
-				
-				<DeleteConfirmModal
-					visible={isDeleteModalVisible}
-					onClose={() => setIsDeleteModalVisible(false)}
-					onConfirm={handleDelete}
-				/>
-				
-				<PlusButton onPress={() => setIsNovoProdutoModalVisible(true)}/>
+				{produtos.length > 0 ? (
+					<Produtos produtos={produtos} onEdit={handleEditeProduto} onDelete={handleConfirmDelete}/>
+				) : (
+					<ProdutoEmptyContainer>
+						<ProdutoEmptyImage source={produto_empty} />
+						<Text color="#fff" weight={600} opacity="0.8" style={{marginTop: 14}}>
+							Sem produtos
+						</Text>
+						<Text color="#fff" opacity="0.5" style={{marginTop: 6}}>
+							Não há produtos a serem visualizados
+						</Text>
+					</ProdutoEmptyContainer>
+				)}
 			</Container>
+			
+			<NovoProdutoModal
+				visible={isNovoProdutoModalVisible}
+				onClose={() => setIsNovoProdutoModalVisible(false)}
+				onSave={handleCreateProduto}
+			/>
+			
+			<EditProdutoModal
+				visible={isEditProdutoModalVisible}
+				onSave={handleSaveEditProduto}
+				onClose={() => setIsEditProdutoModalVisible(false)}
+				produto={produtoBeingEdit}
+			/>
+			
+			<DeleteConfirmModal
+				visible={isDeleteModalVisible}
+				onClose={() => setIsDeleteModalVisible(false)}
+				onConfirm={handleDelete}
+			/>
+			
+			<PlusButton onPress={() => setIsNovoProdutoModalVisible(true)}/>
 		</ProdutoView>
 	)
 }

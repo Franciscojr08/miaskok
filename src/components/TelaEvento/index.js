@@ -1,4 +1,4 @@
-import {Container, EventoView} from "./style";
+import {Container, EventoEmptyContainer, EventoEmptyImage, EventoView} from "./style";
 import Eventos from "../Evento";
 import PlusButton from "../PlusButton";
 import {useEffect, useState} from "react";
@@ -8,6 +8,8 @@ import Toast from "react-native-toast-message";
 import {consultarProduto, consultarProdutos, editarProduto, removerProduto} from "../../service/produtoService";
 import DeleteConfirmModal from "../DeleteConfirmModal";
 import EditEventoModal from "../EditEventoModal";
+import evento_empty from "../../assets/images/evento_empty.png";
+import {Text} from "../Text";
 
 export default function TelaEvento() {
 	const [isNovoEventoModalVisible, setIsNovoEventoModalVisible] = useState(false)
@@ -147,7 +149,19 @@ export default function TelaEvento() {
 	return (
 		<EventoView>
 			<Container>
-				<Eventos eventos={eventos} onEdit={handleEditeEvento} onDelete={handleConfirmDelete} />
+				{eventos.length > 0 ? (
+					<Eventos eventos={eventos} onEdit={handleEditeEvento} onDelete={handleConfirmDelete} />
+				) : (
+					<EventoEmptyContainer>
+						<EventoEmptyImage source={evento_empty}/>
+						<Text color="#fff" weight={600} opacity="0.8" style={{marginTop: 14}}>
+							Sem eventos
+						</Text>
+						<Text color="#fff" opacity="0.5" style={{marginTop: 6}}>
+							Não há eventos a serem visualizados
+						</Text>
+					</EventoEmptyContainer>
+				)}
 			</Container>
 			
 			<NovoEventoModal
